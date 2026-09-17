@@ -1,6 +1,6 @@
 # GymTracker
 
-A local-first iOS workout tracker and hypertrophy split planner built with SwiftUI and SwiftData. Zero accounts, no cloud sync, no tracking, and no network dependencies — all your workout history, splits, and progress photos stay strictly on your device.
+A local-first iOS workout tracker and hypertrophy split planner built with SwiftUI and SwiftData. Zero accounts, no cloud sync, no tracking, and no network dependencies -> all your workout history, splits, and progress photos stay strictly on your device.
 
 ---
 
