@@ -16,7 +16,7 @@ struct ContentView: View {
                 .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
 
             ExploreView()
-                .tabItem { Label("Explore", systemImage: "play.rectangle.fill") }
+                .tabItem { Label("Splits", systemImage: "sparkles") }
         }
     }
 }

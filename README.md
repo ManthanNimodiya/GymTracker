@@ -1,23 +1,63 @@
 # GymTracker
 
-A local-first iOS gym tracker built with SwiftUI and SwiftData. No accounts, no cloud sync, no network dependency for your workout data — everything lives on your device.
+A local-first iOS workout tracker and hypertrophy split planner built with SwiftUI and SwiftData. Zero accounts, no cloud sync, no tracking, and no network dependencies — all your workout history, splits, and progress photos stay strictly on your device.
 
-## Features
+---
 
-- **Plan** — a weekly routine editor with a daily view showing today's recommended exercises, a Skip / On My Way / Done status (Skip prompts for a reason), a 7-day history strip, and tomorrow's preview.
-- **Workouts** — log sessions as sets of reps and weight per exercise, browse history.
-- **Exercises** — a catalog of your exercises grouped by muscle group (Chest, Back, Shoulders, Legs, Bicep, Tricep, Forearms, Abs), each with optional progress photos.
-- **Progress** — a per-exercise chart of your max weight over time.
-- **Steps** — today's step count via CoreMotion, opt-in with an explicit "Enable" action.
-- **Explore** — a video feed pulled from a YouTube channel's public RSS feed, with a local search bar.
+## 📱 Screenshots
 
-## Requirements
+<p align="center">
+  <img src="screenshots/plan-view.png" width="22%" alt="Plan Tab" />
+  <img src="screenshots/progress-chart.png" width="22%" alt="Progress Chart" />
+  <img src="screenshots/splits-planner.png" width="22%" alt="Splits Planner" />
+  <img src="screenshots/hypertrophy-principles.png" width="22%" alt="Hypertrophy Principles" />
+</p>
+
+---
+
+## ✨ Features
+
+- **Plan & Routine Tracker**
+  - **7-Day Interactive Date Strip** — Tap any date on the top carousel to inspect that day's logged sets, volume, and routine check-in status.
+  - **Quick Status Actions** — Simple **Done (✓)** and **Skip (✕ with reason)** actions with real-time status badges.
+  - **Live Auto Step Counter** — Tracks daily step counts via CoreMotion (`CMPedometer`) automatically in the background without requiring manual clicks.
+  - **Inline Set Logging** — Expandable exercise rows with quick weight adjustment chip presets (`-2.5`, `+2.5`, `+5 kg`) and instant "+ Add Exercise" capability.
+
+- **Jeff Nippard Science-Based Split Planner**
+  - Curated evidence-based split templates:
+    - **7-Day Upper / Lower / Deadlifts Abs & PPL** *(Active Default Routine)*
+    - **6-Day Push / Pull / Legs (PPL)**
+    - **4-Day Upper / Lower Split**
+    - **3-Day Full Body Split**
+  - **One-Tap Apply to Plan** — Automatically configures and populates your active weekly routine.
+  - **Hypertrophy Principles Guide** — Built-in science guidelines on *1-2 RIR (Reps in Reserve)*, *Stretch-Mediated Hypertrophy*, *Volume & Frequency*, and *Progressive Overload*.
+
+- **Workouts & Session Logging**
+  - Log sets with reps and weight.
+  - **Full Workout Editing** — Reorder sets, edit past workout details, update timestamps, or delete sets via swipe actions.
+  - Session summaries with total volume and sets count.
+
+- **Exercise Catalog & Progress Photos**
+  - Filter by muscle group (*Chest, Back, Shoulders, Legs, Biceps, Triceps, Forearms, Abs*).
+  - Track Personal Record (PR) max weights per exercise.
+  - Form-check and progress photo gallery with local downscaling and full-screen inspection.
+
+- **Strength Progress & Interactive Analytics**
+  - Swift Charts progression graph with AreaMark gradient curves.
+  - **Point-Click Inspection** — Tap or scrub along the chart points to inspect exact dates, max weights lifted, PR badges, and delta improvements (`+X kg` / `-X kg`).
+  - History list linked with interactive chart highlighting.
+
+---
+
+## 🛠️ Requirements
 
 - Xcode 16 or later
 - iOS 17.0+ deployment target
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — the `.xcodeproj` is generated from `project.yml` and isn't committed
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — the `.xcodeproj` is generated from `project.yml`
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 ```bash
 git clone https://github.com/ManthanNimodiya/GymTracker.git
@@ -26,14 +66,19 @@ xcodegen generate
 open GymTracker.xcodeproj
 ```
 
-Build and run on a Simulator or a physical device (a free Apple ID works for local device installs; on-device builds expire after 7 days without a paid developer account).
+Build and run on the iOS Simulator or a physical iPhone/iPad.
 
-## Architecture
+---
 
-- **SwiftData** for all persistence — `Exercise`, `WorkoutSession`, `ExerciseSet`, `ProgressPhoto`, `PlanDay`, `PlanExercise`, `DayCheckIn`.
-- **CoreMotion** (`CMPedometer`) for step counts — chosen over HealthKit since it needs no paid-account entitlement, just the standard Motion & Fitness permission.
-- No third-party dependencies.
+## 🏗️ Architecture
 
-## Privacy
+- **SwiftUI + SwiftData** for declarative UI and local data persistence (`Exercise`, `WorkoutSession`, `ExerciseSet`, `ProgressPhoto`, `PlanDay`, `PlanExercise`, `DayCheckIn`).
+- **Swift Charts** for strength progression and PR tracking.
+- **CoreMotion** (`CMPedometer`) for step counting — works with standard motion permissions without requiring paid Apple Developer HealthKit entitlements.
+- **Zero Third-Party Dependencies**.
 
-Everything is stored locally via SwiftData. The only network request the app makes is fetching a public YouTube RSS feed for the Explore tab.
+---
+
+## 🔒 Privacy
+
+Everything is stored locally on your device via SwiftData. No analytics, no third-party SDKs, and no network requests.

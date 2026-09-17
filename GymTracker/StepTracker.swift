@@ -2,15 +2,12 @@ import Foundation
 import CoreMotion
 
 /// Reads today's step count from the device's motion coprocessor via CoreMotion.
-///
-/// This (not HealthKit) is the practical choice here: HealthKit's entitlement requires a paid
-/// Apple Developer account, while CMPedometer only needs the standard Motion & Fitness runtime
-/// permission, which works with a free/personal signing team. It only reports real data on a
-/// physical device — the Simulator has no motion hardware.
+/// Automatically queries and begins real-time updates when available.
 @Observable
 final class StepTracker {
     private let pedometer = CMPedometer()
     private(set) var hasStarted = false
+    private(set) var isQuerying = false
 
     var todaySteps: Int?
     var errorMessage: String?
@@ -19,24 +16,48 @@ final class StepTracker {
         CMPedometer.isStepCountingAvailable()
     }
 
-    func start() {
-        guard !hasStarted else { return }
-        hasStarted = true
+    init() {
+        // Auto-start immediately if pedometer counting is available on the hardware
+        if CMPedometer.isStepCountingAvailable() {
+            start()
+        }
+    }
 
+    func start() {
         guard CMPedometer.isStepCountingAvailable() else {
             errorMessage = "Step counting isn't available on this device."
             return
         }
 
+        guard !hasStarted else {
+            refresh()
+            return
+        }
+
+        hasStarted = true
+        isQuerying = true
         let startOfDay = Calendar.current.startOfDay(for: .now)
 
+        // Initial snapshot for today
         pedometer.queryPedometerData(from: startOfDay, to: .now) { [weak self] data, error in
             Task { @MainActor in
+                self?.isQuerying = false
                 self?.handle(data: data, error: error)
             }
         }
 
+        // Live real-time updates
         pedometer.startUpdates(from: startOfDay) { [weak self] data, error in
+            Task { @MainActor in
+                self?.handle(data: data, error: error)
+            }
+        }
+    }
+
+    func refresh() {
+        guard CMPedometer.isStepCountingAvailable() else { return }
+        let startOfDay = Calendar.current.startOfDay(for: .now)
+        pedometer.queryPedometerData(from: startOfDay, to: .now) { [weak self] data, error in
             Task { @MainActor in
                 self?.handle(data: data, error: error)
             }
@@ -45,6 +66,7 @@ final class StepTracker {
 
     func stop() {
         pedometer.stopUpdates()
+        hasStarted = false
     }
 
     @MainActor
