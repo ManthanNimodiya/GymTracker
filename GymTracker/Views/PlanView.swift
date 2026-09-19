@@ -8,6 +8,7 @@ struct PlanView: View {
     @Query(sort: \Exercise.name) private var catalogExercises: [Exercise]
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
 
+    @AppStorage("appTheme") private var appTheme: String = "system"
     @State private var stepTracker = StepTracker()
     @State private var showingSkipReasonPrompt = false
     @State private var skipReasonDraft = ""
@@ -15,6 +16,14 @@ struct PlanView: View {
     @State private var showingNewWorkout = false
     @State private var showingAddExerciseToDay = false
     @State private var selectedDateForDetail: Date?
+
+    private var themeIcon: String {
+        switch appTheme {
+        case "light": return "sun.max.fill"
+        case "dark": return "moon.stars.fill"
+        default: return "circle.lefthalf.filled"
+        }
+    }
 
     private var calendar: Calendar { .current }
     private var today: Date { calendar.startOfDay(for: .now) }
@@ -189,7 +198,7 @@ struct PlanView: View {
                                 .font(.headline)
                             Spacer()
 
-                            if let plan = todaysPlan {
+                            if todaysPlan != nil {
                                 Button {
                                     showingAddExerciseToDay = true
                                 } label: {
@@ -342,12 +351,39 @@ struct PlanView: View {
             .navigationTitle("Plan")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingPlanEditor = true
-                    } label: {
-                        Image(systemName: "pencil.circle")
-                            .font(.title3)
-                            .foregroundStyle(Color.accentColor)
+                    HStack(spacing: 14) {
+                        Menu {
+                            Button {
+                                appTheme = "system"
+                            } label: {
+                                Label("System Default", systemImage: "circle.lefthalf.filled")
+                            }
+
+                            Button {
+                                appTheme = "light"
+                            } label: {
+                                Label("Light Mode", systemImage: "sun.max.fill")
+                            }
+
+                            Button {
+                                appTheme = "dark"
+                            } label: {
+                                Label("Dark Mode", systemImage: "moon.stars.fill")
+                            }
+                        } label: {
+                            Image(systemName: themeIcon)
+                                .font(.body.weight(.medium))
+                                .foregroundStyle(.secondary)
+                        }
+                        .accessibilityLabel("Change Appearance Theme")
+
+                        Button {
+                            showingPlanEditor = true
+                        } label: {
+                            Image(systemName: "pencil.circle")
+                                .font(.title3)
+                                .foregroundStyle(Color.accentColor)
+                        }
                     }
                 }
             }
@@ -503,7 +539,7 @@ struct PlanView: View {
     }
 
     private func seedDefaultPlanIfNeeded() {
-        let key = "didCleanUserExercises_v4"
+        let key = "didSeedUserWorkouts_v5"
         if !UserDefaults.standard.bool(forKey: key) {
             UserDefaults.standard.set(true, forKey: key)
             for planExercise in planDays.flatMap(\.exercises) {
@@ -514,20 +550,75 @@ struct PlanView: View {
             }
             try? context.save()
 
-            // Seed user's 7-day routine titles without forced dummy exercises
-            let scheduleTitles: [(weekday: Int, title: String)] = [
-                (2, "Upper Body"),
-                (3, "Lower Body"),
-                (4, "Deadlifts Abs"),
-                (5, "Push"),
-                (6, "Pull"),
-                (7, "Legs"),
-                (1, "Deadlifts Abs")
+            let userSchedule: [(weekday: Int, title: String, exercises: [(name: String, group: MuscleGroup, suggestion: String)])] = [
+                // Monday: Chest, Biceps, Triceps, Back
+                (2, "Monday", [
+                    ("Incline Chest Smith Press", .chest, "3 sets • 8-10 reps"),
+                    ("Pec Fly", .chest, "3 sets • 10-12 reps"),
+                    ("Bicep Incline Curls", .biceps, "3 sets • 10-12 reps"),
+                    ("Seated Cable curls", .biceps, "3 sets • 10-12 reps"),
+                    ("Tricep Pushdown Single hand", .triceps, "3 sets • 12-15 reps"),
+                    ("Tricep Pushdown", .triceps, "3 sets • 10-12 reps"),
+                    ("Pullups", .back, "3 sets • 8-10 reps"),
+                    ("Isolateral Rows", .back, "3 sets • 8-10 reps")
+                ]),
+                // Tuesday: Legs & Shoulders
+                (3, "Tuesday", [
+                    ("Pendulum Squats", .legs, "3 sets • 8-10 reps"),
+                    ("Leg Curls", .legs, "3 sets • 10-12 reps"),
+                    ("Leg Extensions", .legs, "3 sets • 12-15 reps"),
+                    ("Abductors", .legs, "3 sets • 12-15 reps"),
+                    ("Barbell Overhead", .shoulders, "3 sets • 6-8 reps"),
+                    ("Lateral Raises", .shoulders, "4 sets • 12-15 reps")
+                ]),
+                // Wednesday: Deadlifts and Abs
+                (4, "Deadlifts and Abs", [
+                    ("Deadlifts", .back, "3 sets • 5 reps"),
+                    ("Hanging Leg Raises", .abs, "3 sets • 12-15 reps"),
+                    ("Cable Crunches", .abs, "3 sets • 12-15 reps")
+                ]),
+                // Thursday: Chest, Shoulders & Triceps
+                (5, "Thursday", [
+                    ("Incline DB Press", .chest, "3 sets • 8-10 reps"),
+                    ("Reverse Lateral Raises", .shoulders, "3 sets • 12-15 reps"),
+                    ("Chest Press", .chest, "3 sets • 8-10 reps"),
+                    ("Reverse grip Tricep Pushdown", .triceps, "3 sets • 10-12 reps"),
+                    ("Tricep Pushdown Single hand", .triceps, "3 sets • 12-15 reps"),
+                    ("Tricep Overhead", .triceps, "3 sets • 12-15 reps")
+                ]),
+                // Friday: yet to come
+                (6, "Friday (Yet to come)", []),
+                // Saturday: yet
+                (7, "Saturday (Yet)", []),
+                // Sunday: Deadlift and Abs
+                (1, "Deadlift and Abs", [
+                    ("Deadlift", .back, "3 sets • 5 reps"),
+                    ("Leg Raises", .abs, "3 sets • 12-15 reps"),
+                    ("Cable Crunches", .abs, "3 sets • 12-15 reps")
+                ])
             ]
 
-            for entry in scheduleTitles {
+            for entry in userSchedule {
                 let planDay = PlanDay(weekday: entry.weekday, title: entry.title)
                 context.insert(planDay)
+
+                for (index, ex) in entry.exercises.enumerated() {
+                    let planExercise = PlanExercise(
+                        name: ex.name,
+                        suggestion: ex.suggestion,
+                        order: index,
+                        muscleGroup: ex.group,
+                        day: planDay
+                    )
+                    context.insert(planExercise)
+
+                    // Ensure registered in catalog library
+                    let catalogExists = catalogExercises.contains { $0.name.localizedCaseInsensitiveCompare(ex.name) == .orderedSame }
+                    if !catalogExists {
+                        let catalogEx = Exercise(name: ex.name, category: ex.group.rawValue)
+                        context.insert(catalogEx)
+                    }
+                }
             }
             try? context.save()
             return

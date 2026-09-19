@@ -381,91 +381,81 @@ struct NippardSplitTemplate: Identifiable {
     let days: [NippardDayTemplate]
 
     static let allSplits: [NippardSplitTemplate] = [
-        // 1. User's 7-Day Split: Upper, Lower, Deadlifts Abs, Push, Pull, Legs, Deadlifts Abs
+        // 1. User's 7-Day Split: Custom Weekly Program
         NippardSplitTemplate(
-            name: "7-Day Upper / Lower / Deadlifts & PPL",
-            frequency: "7 Days (High Frequency)",
+            name: "My Custom Weekly Routine",
+            frequency: "5-7 Days Split",
             experience: "Intermediate — Advanced",
-            summary: "Your custom complete routine split: Upper Body, Lower Body, Deadlifts & Abs, Push, Pull, Legs, and Deadlifts & Abs for maximum progressive overload and core development.",
+            summary: "Your custom structured weekly routine featuring Incline Chest Smith Press, Pendulum Squats, Deadlifts & Abs, and targeted arm & delt isolation.",
             days: [
                 NippardDayTemplate(
                     weekday: 2, // Monday
                     title: "Upper Body",
                     exercises: [
-                        NippardExerciseTemplate(name: "Incline Dumbbell Press", suggestion: "3 sets • 8-10 reps (Upper chest stretch)", muscleGroup: .chest),
-                        NippardExerciseTemplate(name: "Barbell Bent Over Row", suggestion: "3 sets • 6-8 reps (Back thickness)", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Overhead Dumbbell Press", suggestion: "3 sets • 8-10 reps (Shoulders)", muscleGroup: .shoulders),
-                        NippardExerciseTemplate(name: "Lat Pulldown", suggestion: "3 sets • 8-10 reps (Lat width)", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Triceps Rope Pushdown", suggestion: "3 sets • 10-12 reps", muscleGroup: .triceps),
-                        NippardExerciseTemplate(name: "Incline Dumbbell Bicep Curl", suggestion: "3 sets • 10-12 reps", muscleGroup: .biceps)
+                        NippardExerciseTemplate(name: "Incline Chest Smith Press", suggestion: "3 sets • 8-10 reps (Upper chest)", muscleGroup: .chest),
+                        NippardExerciseTemplate(name: "Pec Fly", suggestion: "3 sets • 10-12 reps (Chest stretch)", muscleGroup: .chest),
+                        NippardExerciseTemplate(name: "Bicep Incline Curls", suggestion: "3 sets • 10-12 reps (Biceps stretch)", muscleGroup: .biceps),
+                        NippardExerciseTemplate(name: "Seated Cable curls", suggestion: "3 sets • 10-12 reps (Peak tension)", muscleGroup: .biceps),
+                        NippardExerciseTemplate(name: "Tricep Pushdown Single hand", suggestion: "3 sets • 12-15 reps (Unilateral)", muscleGroup: .triceps),
+                        NippardExerciseTemplate(name: "Tricep Pushdown", suggestion: "3 sets • 10-12 reps", muscleGroup: .triceps),
+                        NippardExerciseTemplate(name: "Pullups", suggestion: "3 sets • 6-10 reps (Lats)", muscleGroup: .back),
+                        NippardExerciseTemplate(name: "Isolateral Rows", suggestion: "3 sets • 8-10 reps (Upper back)", muscleGroup: .back)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 3, // Tuesday
                     title: "Lower Body",
                     exercises: [
-                        NippardExerciseTemplate(name: "Barbell Back Squat", suggestion: "3 sets • 6-8 reps (Quad focus)", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Romanian Deadlift", suggestion: "3 sets • 8-10 reps (Hamstrings)", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Leg Press", suggestion: "3 sets • 10-12 reps", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Standing Calf Raises", suggestion: "4 sets • 12-15 reps", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Leg Extension", suggestion: "3 sets • 12-15 reps", muscleGroup: .legs)
+                        NippardExerciseTemplate(name: "Pendulum Squats", suggestion: "3 sets • 8-10 reps (Quads)", muscleGroup: .legs),
+                        NippardExerciseTemplate(name: "Leg Curls", suggestion: "3 sets • 10-12 reps (Hamstrings)", muscleGroup: .legs),
+                        NippardExerciseTemplate(name: "Leg Extensions", suggestion: "3 sets • 12-15 reps (Quad isolation)", muscleGroup: .legs),
+                        NippardExerciseTemplate(name: "Abductors", suggestion: "3 sets • 15-20 reps (Glute medius)", muscleGroup: .legs),
+                        NippardExerciseTemplate(name: "Barbell Overhead", suggestion: "3 sets • 8-10 reps (Shoulders)", muscleGroup: .shoulders),
+                        NippardExerciseTemplate(name: "Lateral Raises", suggestion: "4 sets • 12-15 reps (Side delts)", muscleGroup: .shoulders)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 4, // Wednesday
-                    title: "Deadlifts Abs",
+                    title: "Deadlifts and Abs",
                     exercises: [
-                        NippardExerciseTemplate(name: "Barbell Deadlift", suggestion: "3 sets • 5 reps (Strength peak)", muscleGroup: .back),
+                        NippardExerciseTemplate(name: "Deadlifts", suggestion: "3 sets • 5 reps (Posterior chain)", muscleGroup: .back),
                         NippardExerciseTemplate(name: "Hanging Leg Raises", suggestion: "3 sets • 12-15 reps (Lower abs)", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Cable Woodchoppers", suggestion: "3 sets • 12-15 reps each side (Obliques)", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Ab Wheel Rollout", suggestion: "3 sets • 10-12 reps", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Face Pulls", suggestion: "3 sets • 12-15 reps (Rear delts)", muscleGroup: .shoulders)
+                        NippardExerciseTemplate(name: "Cable Crunches", suggestion: "3 sets • 12-15 reps (Upper abs)", muscleGroup: .abs)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 5, // Thursday
                     title: "Push",
                     exercises: [
-                        NippardExerciseTemplate(name: "Flat Barbell Bench Press", suggestion: "3 sets • 6-8 reps", muscleGroup: .chest),
-                        NippardExerciseTemplate(name: "Standing Overhead Press", suggestion: "3 sets • 8-10 reps", muscleGroup: .shoulders),
-                        NippardExerciseTemplate(name: "Incline Barbell Bench Press", suggestion: "3 sets • 8-10 reps", muscleGroup: .chest),
-                        NippardExerciseTemplate(name: "Cable Lateral Raises", suggestion: "4 sets • 12-15 reps", muscleGroup: .shoulders),
-                        NippardExerciseTemplate(name: "Overhead Rope Triceps Extension", suggestion: "3 sets • 12-15 reps", muscleGroup: .triceps),
-                        NippardExerciseTemplate(name: "Cable Chest Flyes", suggestion: "3 sets • 12-15 reps", muscleGroup: .chest)
+                        NippardExerciseTemplate(name: "Incline DB Press", suggestion: "3 sets • 8-10 reps (Upper chest)", muscleGroup: .chest),
+                        NippardExerciseTemplate(name: "Reverse Lateral Raises", suggestion: "3 sets • 12-15 reps (Rear delts)", muscleGroup: .shoulders),
+                        NippardExerciseTemplate(name: "Chest Press", suggestion: "3 sets • 8-10 reps (Mid chest)", muscleGroup: .chest),
+                        NippardExerciseTemplate(name: "Reverse grip Tricep Pushdown", suggestion: "3 sets • 10-12 reps", muscleGroup: .triceps),
+                        NippardExerciseTemplate(name: "Tricep Pushdown Single hand", suggestion: "3 sets • 12-15 reps", muscleGroup: .triceps),
+                        NippardExerciseTemplate(name: "Tricep Overhead", suggestion: "3 sets • 10-12 reps (Long head)", muscleGroup: .triceps)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 6, // Friday
-                    title: "Pull",
+                    title: "Friday Workout",
                     exercises: [
-                        NippardExerciseTemplate(name: "Barbell Bent Over Row", suggestion: "3 sets • 6-8 reps", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Neutral Grip Lat Pulldown", suggestion: "3 sets • 8-10 reps", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Chest-Supported T-Bar Row", suggestion: "3 sets • 8-12 reps", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Reverse Pec Deck Fly", suggestion: "3 sets • 12-15 reps", muscleGroup: .shoulders),
-                        NippardExerciseTemplate(name: "Preacher Curls", suggestion: "3 sets • 10-12 reps", muscleGroup: .biceps),
-                        NippardExerciseTemplate(name: "Hammer Curls", suggestion: "3 sets • 12-15 reps", muscleGroup: .forearms)
+                        NippardExerciseTemplate(name: "Rest or Custom Workout", suggestion: "Tap + to add exercises", muscleGroup: .other)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 7, // Saturday
-                    title: "Legs",
+                    title: "Saturday Workout",
                     exercises: [
-                        NippardExerciseTemplate(name: "Hack Squat / Front Squat", suggestion: "3 sets • 8-10 reps", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Bulgarian Split Squats", suggestion: "3 sets • 10-12 reps each", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Lying Hamstring Curls", suggestion: "3 sets • 10-12 reps", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Leg Extensions", suggestion: "3 sets • 12-15 reps", muscleGroup: .legs),
-                        NippardExerciseTemplate(name: "Seated Calf Raises", suggestion: "4 sets • 15 reps", muscleGroup: .legs)
+                        NippardExerciseTemplate(name: "Rest or Custom Workout", suggestion: "Tap + to add exercises", muscleGroup: .other)
                     ]
                 ),
                 NippardDayTemplate(
                     weekday: 1, // Sunday
-                    title: "Deadlifts Abs",
+                    title: "Deadlift and Abs",
                     exercises: [
-                        NippardExerciseTemplate(name: "Stiff-Leg / Deficit Deadlift", suggestion: "3 sets • 6-8 reps", muscleGroup: .back),
-                        NippardExerciseTemplate(name: "Captain's Chair Leg Raises", suggestion: "3 sets • 12-15 reps", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Cable Crunches", suggestion: "3 sets • 12-15 reps", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Pallof Press", suggestion: "3 sets • 10 reps each", muscleGroup: .abs),
-                        NippardExerciseTemplate(name: "Hyperextensions", suggestion: "3 sets • 12-15 reps", muscleGroup: .back)
+                        NippardExerciseTemplate(name: "Deadlifts", suggestion: "3 sets • 5 reps", muscleGroup: .back),
+                        NippardExerciseTemplate(name: "Hanging Leg Raises", suggestion: "3 sets • 12-15 reps", muscleGroup: .abs),
+                        NippardExerciseTemplate(name: "Cable Crunches", suggestion: "3 sets • 12-15 reps", muscleGroup: .abs)
                     ]
                 )
             ]

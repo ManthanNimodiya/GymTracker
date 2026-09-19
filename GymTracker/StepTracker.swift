@@ -2,7 +2,7 @@ import Foundation
 import CoreMotion
 
 /// Reads today's step count from the device's motion coprocessor via CoreMotion.
-/// Automatically queries and begins real-time updates when available.
+/// Pedometer operations are dispatched asynchronously so app launch remains instantaneous.
 @Observable
 final class StepTracker {
     private let pedometer = CMPedometer()
@@ -17,10 +17,7 @@ final class StepTracker {
     }
 
     init() {
-        // Auto-start immediately if pedometer counting is available on the hardware
-        if CMPedometer.isStepCountingAvailable() {
-            start()
-        }
+        // Keep initialization completely lightweight to ensure zero launch delay
     }
 
     func start() {
